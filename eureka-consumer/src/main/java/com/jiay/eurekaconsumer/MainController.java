@@ -4,6 +4,7 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -16,13 +17,22 @@ import java.util.List;
 @RestController
 public class MainController {
     
-    @Autowired
     DiscoveryClient client;
     @Autowired
+    public void setClient (DiscoveryClient client) {
+        this.client = client;
+    }
     EurekaClient client2;
-    
     @Autowired
+    public void setClient2 (@Qualifier("eurekaClient") EurekaClient client2) {
+        this.client2 = client2;
+    }
+    
     LoadBalancerClient lb;
+    @Autowired
+    public void setLb (LoadBalancerClient lb) {
+        this.lb = lb;
+    }
     
     @GetMapping("/getHi")
     public String getHi() {
@@ -49,7 +59,7 @@ public class MainController {
         for (ServiceInstance instance : instances) {
             System.out.println(ToStringBuilder.reflectionToString(instance));
         }
-        return "xxoo";
+        return "xojo";
     }
     
     @GetMapping("/client4")
@@ -71,7 +81,7 @@ public class MainController {
                 System.out.println("respStr---" + respStr);
             }
         }
-        return "xxoo";
+        return "xojo";
     }
     
     @GetMapping("/client5")
@@ -87,6 +97,6 @@ public class MainController {
         String respStr = template.getForObject(url, String.class);
         System.out.println("respStr---" + respStr);
         
-        return "xxoo";
+        return "xojo";
     }
 }
